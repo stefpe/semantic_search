@@ -1,0 +1,9 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/v1/modules/text2vec-contextionary/extensions-storage/"
+  },
+  "response": {
+    "status": 200
+  }
+}

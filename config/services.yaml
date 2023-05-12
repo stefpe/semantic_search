@@ -22,3 +22,12 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    OpenSearch\Client:
+        factory: ['OpenSearch\ClientBuilder', 'fromConfig']
+        arguments:
+            - {hosts: ["http://search:9200"]}
+
+    Contextionary\ContextionaryClient:
+        factory: ['App\Factory\ContextionaryClientFactory', 'create']
+        arguments:
+            - 't2v-contextionary:9999'

@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+package contextionary;
+
+service Contextionary {
+  rpc IsWordStopword(Word) returns (WordStopword) {}
+  rpc IsWordPresent(Word) returns (WordPresent) {}
+  rpc SchemaSearch(SchemaSearchParams) returns (SchemaSearchResults) {}
+  rpc SafeGetSimilarWordsWithCertainty(SimilarWordsParams) returns (SimilarWordsResults) {}
+  rpc VectorForWord(Word) returns (Vector) {}
+  rpc MultiVectorForWord(WordList) returns (VectorList) {}
+  rpc VectorForCorpi(Corpi) returns (Vector) {}
+  rpc NearestWordsByVector(VectorNNParams) returns (NearestWords) {}
+  rpc MultiNearestWordsByVector(VectorNNParamsList) returns (NearestWordsList) {}
+  rpc Meta(MetaParams) returns (MetaOverview) {}
+  rpc AddExtension(ExtensionInput) returns (AddExtensionResult) {}
+}
+
+message ExtensionInput {
+  string concept = 1;
+  string definition = 2;
+  float weight = 3;
+}
+
+message AddExtensionResult { }
+
+message MetaParams {}
+
+message MetaOverview {
+  string version = 1;
+  int64 wordCount = 2;
+}
+
+message Word {
+ string word = 1;
+}
+
+message WordList {
+ repeated Word words = 1;
+}
+
+message WordPresent {
+ bool present = 1;
+}
+
+message Vector {
+  repeated VectorEntry entries = 1;
+  repeated InputElement source = 2;
+};
+
+message InputElement {
+  string concept = 1;
+  float weight = 2;
+  uint64 occurrence = 3;
+};
+
+message VectorList {
+  repeated Vector vectors = 1;
+}
+
+message VectorEntry {
+  float Entry = 1;
+}
+
+message VectorNNParams {
+  Vector vector = 1;
+  int32 k = 2;
+  int32 n = 3;
+}
+
+message VectorNNParamsList {
+  repeated VectorNNParams Params = 1;
+}
+
+message Corpi {
+  repeated string corpi = 1;
+  repeated Override overrides = 2;
+}
+
+message Override {
+  string word = 1;
+  string expression = 2;
+}
+
+message WordStopword {
+ bool stopword = 1;
+}
+
+message SimilarWordsParams {
+  string word = 1;
+  float certainty = 2;
+}
+
+message SimilarWordsResults {
+  repeated Word words = 1;
+}
+
+message NearestWords {
+  repeated string words = 1;
+  repeated float distances = 2;
+  VectorList vectors = 3;
+}
+
+message NearestWordsList {
+  repeated NearestWords words = 1;
+}
+
+message Keyword {
+  string keyword = 1;
+  float weight = 2;
+}
+
+enum SearchType {
+  CLASS=0;
+  PROPERTY=1;
+};
+
+message SchemaSearchParams {
+  SearchType searchType = 1;
+  string name = 2;
+  repeated Keyword keywords = 3;
+  float certainty = 5;
+}
+
+message SchemaSearchResults {
+  SearchType type = 1;
+  repeated SchemaSearchResult results = 2;
+}
+
+message SchemaSearchResult {
+  string name = 1;
+  float certainty = 3;
+}
