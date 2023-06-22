@@ -67,9 +67,9 @@ class VectorizeCommand extends Command
             'index' => self::INDEX,
             'body' => [
                 'settings' => [
+                    'index.knn' => true,
+                    'index.knn.space_type' => 'cosinesimil', #measure the orientation between two vectors, perfect for semantic search applications
                     'index' => [
-                        'knn' => true,
-                        'knn.space_type' => 'cosinesimil', #measure the orientation between two vectors, perfect for semantic search applications
                         'number_of_shards' => 1
                     ]
                 ],
